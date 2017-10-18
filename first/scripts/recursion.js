@@ -33,16 +33,19 @@ for(var i = 1; i < 9; i++){
 var twoDimens = new Array(evenNumbers, oddNumbers, data);
 console.log(twoDimens);
 
-for(var i = 0; i < twoDimens.length; i++){
+/*for(var i = 0; i < twoDimens.length; i++){
     for(var j = 0; j < twoDimens[i].length; j++){
         console.log("Элемент с индексом " + i + " " + j + "  равен: " + twoDimens[i][j]);
-
     }
-};
-function toOneDimentional(twoDimens){
-        var result = new Array();
-        if (twoDimens[i][j]!=null) {
+};*/
+
+var toOneDimentional = function(twoDimens){
+  var result = new Array();
+  for(var i = 0; i < twoDimens.length; i++){
+      for(var j = 0; j < twoDimens[i].length; j++){
           result.push(twoDimens[i][j]);
-          console.log(result);
-        }};
+      }
+  };
+};
+
 console.log(toOneDimentional());
