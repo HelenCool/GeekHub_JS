@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 function count(number) {
     if (number === 0) {
         console.log("Something goes wrong");
@@ -18,4 +17,3 @@ var third = ["g", "h", "i"];
 
 var alph = [first, second, third];
 console.log(alph);
->>>>>>> 52564fd3664fb8443db7d5267f5d5cc2be09bd12
