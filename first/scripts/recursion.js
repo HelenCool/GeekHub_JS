@@ -8,3 +8,4 @@ function count(number) {
     }
 }
 count(8);
+
