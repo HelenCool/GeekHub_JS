@@ -36,14 +36,14 @@ var forinArray = function(){
 
 //функция for для упорядоченого объекта строк
 var forObject1 = function(i) {
-    var key = Object.keys(this)[i]; // возвращает массив из свойств переданного объекта
+    var key = Object.keys(object1)[i]; // возвращает массив из свойств переданного объекта
     for(var i=0;i<object1.length;i++) {
         object1[key]="new obj = " + String.fromCharCode(j+1);
     }
     //console.log(object1);
 }
 
-var f = forObject1.bind(object1); //привязка контекста
+
 
 //функция for in для упорядоченого объекта строк
 var forinObject1 = function(i){
@@ -85,7 +85,6 @@ console.timeEnd("forinArray");
 
 
 console.time("forObject1");
-f();
 forObject1();
 console.timeEnd("forObject1");
 
