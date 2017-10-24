@@ -8,7 +8,8 @@ var cat = {
 
 var clonedCat = {};
 
-for (var key in cat) {
+function clone(){for (var key in cat) {
         clonedCat[key] = cat[key];
     console.log("Ключ: " + key + " значение: " + clonedCat[key]);
-}
+}}
+clone();
