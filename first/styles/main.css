@@ -9,7 +9,9 @@ h1 {
     font-size: 3.5em;
 }
 
-
+p {
+    padding-left: 110px;
+}
 /*------Buttons------*/
 a.myButton {
 
