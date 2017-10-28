@@ -34,8 +34,9 @@ var forinArray = function(){
 
 //функция for для упорядоченого объекта строк
 var forObject1 = function(i) {
+    var length = Object.keys(object2).length;
     var key = Object.keys(object1)[i]; // возвращает массив из свойств переданного объекта
-    for(var i=0;i<(object1.length || 100000);i++) {
+    for(var i=0;i<(length || 100000);i++) {
         object1[key]="new obj = " + String.fromCharCode(j+1);
     }
 };
@@ -52,8 +53,9 @@ var forinObject1 = function(){
 
 //функция for для объекта с рандомными строками
 var forObject2 = function(i) {
+    var length = Object.keys(object2).length;
     var key = Object.keys(this)[i]; // возвращает массив из свойств
-    for(var i=0;i<object2.length;i++) {
+    for(var i=0;i<(length || 100000);i++) {
         object2[key]= (Math.random()*100).toString();
     }
 };
