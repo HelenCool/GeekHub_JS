@@ -22,7 +22,11 @@ function convertArray(input) {
         }
     });
 }
+<<<<<<< HEAD
 
 convertArray(twoDimensional);
 console.log(oneDimensional);
+=======
+count(8);
+>>>>>>> 08d971dc09a494be699cfc3164789db65b9cf35f
 
