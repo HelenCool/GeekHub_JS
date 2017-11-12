@@ -1,18 +1,34 @@
 
 /*--------functional inheritance----------*/
-function Animal(name, food) {
-    this.isVictim = function(){
-        this.victim = false;
-    };
-    this.isAlive = function(){
-        this.alive = true;
-    };
-    this.move = true;
-    this.name = name;
-    this.food = food;
-};
+"use strict";
+function Animal(health, type, isHunter){
+    this.health = health;
+    this.type = type;
+    this.isHunter = isHunter;
+    if (this.type === "predator"){
+        Object.defineProperty(this, "health",{
+            writable: false,
+            configurable: false
+        });
+    }
+    if (isHunter){
+        this.points = (Math.round(Math.random()*100));
+    }
+    else this.points = (Math.round(Math.random()*10));
 
-function Mouse (){
+    function makeShot(obj1, obj2) {
+        makeShot.bind(this, arguments);
+        var hp = obj1.health;
+        var power = obj2.points;
+        var shot = hp - power;
+        if (shot < 0){
+            console.log(obj1.name + " is dead");
+        }
+        else console.log(obj1.name + " is still alive");
+    }
+}
+
+function Mouse (health, type, isHunter){
     Animal.apply(this, arguments);
     this.isVictim = function () {
         this.victim = true;
