@@ -50,7 +50,6 @@ Human.prototype.constructor = Human;
 function Hunter(health, type, isHunter){
     Human.apply(this, arguments);
     this.isHunter = true;
-    // this.points = (Math.round(Math.random()*100));
 }
 Hunter.prototype = Object.create(Human.prototype);
 Hunter.prototype.constructor = Hunter;
@@ -66,9 +65,7 @@ Aborigine.prototype.constructor = Aborigine;
 
 function makeShot(obj1, obj2) {
     makeShot.bind(this, arguments);
-    var hp = obj1.health;
-    var power = obj2.points;
-    var shot = hp - power;
+    var shot = obj1.health - obj2.points;
     if (shot < 0){
         console.log(obj1.name + " is dead");
     }

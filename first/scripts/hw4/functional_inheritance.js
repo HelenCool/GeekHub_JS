@@ -16,65 +16,80 @@ function Animal(health, type, isHunter){
     }
     else this.points = (Math.round(Math.random()*10));
 
-    function makeShot(obj1, obj2) {
+}
+
+function Mouse (health, type){
+    Animal.apply(this, arguments);
+    this.name = "Mikkey";
+    this.health = 20;
+    this.type = "victim";
+}
+
+function Eagle (health, type){
+    Animal.apply(this, arguments);
+    this.name = "Jack the Eagle";
+    this.health = 50;
+    this.type = "predator";
+}
+
+function Deer (health, type){
+    Animal.apply(this, arguments);
+    this.name = "Bamby";
+    this.health = 80;
+    this.type = "victim";
+
+}
+
+function Human (health, type, isHunter){
+    Animal.apply(self, arguments);
+    this.health = 100;
+    this.type = "predator";
+    this.isHunter = isHunter;
+    this.makeShot = function(obj) {
         makeShot.bind(this, arguments);
-        var hp = obj1.health;
-        var power = obj2.points;
-        var shot = hp - power;
+        var shot = obj.health - this.points;
         if (shot < 0){
-            console.log(obj1.name + " is dead");
+            console.log(obj.name + " is dead");
         }
-        else console.log(obj1.name + " is still alive");
+        else console.log(obj.name + " is still alive");
     }
 }
 
-function Mouse (health, type, isHunter){
-    Animal.apply(this, arguments);
-    this.isVictim = function () {
-        this.victim = true;
-    };
-};
-
-function Eagle (){
-    Animal.apply(this, arguments);
-    this.food = "mice";
-    this.movement = function () {
-        (hight > 0) ? this.movement = "fly" : "go";
-    }
-};
-
-function Deer (){
-    Animal.apply(this, arguments);
-    this.isVictim = function () {
-        this.victim = true;
-    };
-    this.hunter = "humen";
-
-};
-function Human (){
-    Animal.apply(this, arguments);
-    this.victims = "deers";
-
-};
-function Hunter (){
+function Hunter (health, type, isHunter){
     Human.apply(this, arguments);
-    this.hasWeapon = function () {
-        this.armed = true;
+    this.isHunter = true;
+    var hunterMakeShot = this.makeShot;
+    this.makeShot = function(obj){
+        hunterMakeShot.call(this);
     }
-};
+}
 
-function Aborigine (){
+function Aborigine (health, type, isHunter){
     Human.apply(this, arguments);
-    this.hasWeapon = function () {
-        this.armed = false;
+    this.isHunter = false;
+    var aborigineMakeShot = this.makeShot;
+    this.makeShot = function(){
+        aborigineMakeShot.call(this);
     }
-};
+}
 
-var mouse = new Mouse("Mikkey", "corns");
+var mouse = new Mouse();
 var eagle = new Eagle();
 var deer = new Deer();
 var human = new Human();
-var hunter = new Hunter("Walt");
-var aborigine = new Aborigine("Sam");
+var hunter = new Hunter("","", true);
+var aborigine = new Aborigine();
 
 console.log(mouse,eagle, deer, human,hunter, aborigine);
+
+console.log("Hunter made a shot with " + hunter.points + " points");
+
+hunter.makeShot(mouse);
+hunter.makeShot(deer);
+hunter.makeShot(eagle);
+
+console.log("Aborigine made a shot with " + aborigine.points + " points");
+
+aborigine.makeShot(mouse);
+aborigine.makeShot(deer);
+aborigine.makeShot(eagle);
