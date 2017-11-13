@@ -2,19 +2,20 @@
 /*--------functional inheritance----------*/
 "use strict";
 function Animal(health, type, isHunter){
-    this.health = health;
-    this.type = type;
-    this.isHunter = isHunter;
-    if (this.type === "predator"){
-        Object.defineProperty(this, "health",{
+    var self = this;
+    self.health = health;
+    self.type = type;
+    self.isHunter = isHunter;
+    if (self.type === "predator"){
+        Object.defineProperty(self, "health",{
             writable: false,
             configurable: false
         });
     }
     if (isHunter){
-        this.points = (Math.round(Math.random()*100));
+        self.points = (Math.round(Math.random()*100));
     }
-    else this.points = (Math.round(Math.random()*10));
+    else self.points = (Math.round(Math.random()*10));
 
 }
 
@@ -41,12 +42,11 @@ function Deer (health, type){
 }
 
 function Human (health, type, isHunter){
-    Animal.apply(self, arguments);
+    Animal.apply(this, arguments);
     this.health = 100;
     this.type = "predator";
     this.isHunter = isHunter;
     this.makeShot = function(obj) {
-        makeShot.bind(this, arguments);
         var shot = obj.health - this.points;
         if (shot < 0){
             console.log(obj.name + " is dead");
@@ -60,7 +60,7 @@ function Hunter (health, type, isHunter){
     this.isHunter = true;
     var hunterMakeShot = this.makeShot;
     this.makeShot = function(obj){
-        hunterMakeShot.call(this);
+        hunterMakeShot.apply(this, arguments);
     }
 }
 
@@ -69,7 +69,7 @@ function Aborigine (health, type, isHunter){
     this.isHunter = false;
     var aborigineMakeShot = this.makeShot;
     this.makeShot = function(){
-        aborigineMakeShot.call(this);
+        aborigineMakeShot.apply(this, arguments);
     }
 }
 
