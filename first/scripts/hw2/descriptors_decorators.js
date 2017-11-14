@@ -1,34 +1,36 @@
 "use strict";
-function Cat() { };
+
+function Cat() {
+};
 
 /*---------фабричные методы:-------*/
-    Cat.createGirl = function(smth1){
-       var catGirl = new Cat;
-        catGirl.wearsDress = true;
-        catGirl.name = smth1.name;
-        catGirl.age = smth1.age;
-        catGirl.numberOfOwners = smth1.numberOfOwners;
-        catGirl.breed = smth1.breed;
-        catGirl.color = smth1.color;
-        catGirl.sex = smth1.sex;
-        catGirl.owner = smth1.owner;
-        catGirl.lastDoctorVisit = smth1.lastDoctorVisit;
-        return catGirl;
-    };
+Cat.createGirl = function (smth1) {
+    var catGirl = new Cat;
+    catGirl.wearsDress = true;
+    catGirl.name = smth1.name;
+    catGirl.age = smth1.age;
+    catGirl.numberOfOwners = smth1.numberOfOwners;
+    catGirl.breed = smth1.breed;
+    catGirl.color = smth1.color;
+    catGirl.sex = smth1.sex;
+    catGirl.owner = smth1.owner;
+    catGirl.lastDoctorVisit = smth1.lastDoctorVisit;
+    return catGirl;
+};
 
-    Cat.createBoy = function(smth2){
-        var catBoy = new Cat();
-        catBoy.wearsDress = false;
-        catBoy.name = smth2.name;
-        catBoy.age = smth2.age;
-        catBoy.numberOfOwners = smth2.numberOfOwners;
-        catBoy.breed = smth2.breed;
-        catBoy.color = smth2.color;
-        catBoy.sex = smth2.sex;
-        catBoy.owner = smth2.owner;
-        catBoy.lastDoctorVisit = smth2.lastDoctorVisit;
-        return catBoy;
-    };
+Cat.createBoy = function (smth2) {
+    var catBoy = new Cat();
+    catBoy.wearsDress = false;
+    catBoy.name = smth2.name;
+    catBoy.age = smth2.age;
+    catBoy.numberOfOwners = smth2.numberOfOwners;
+    catBoy.breed = smth2.breed;
+    catBoy.color = smth2.color;
+    catBoy.sex = smth2.sex;
+    catBoy.owner = smth2.owner;
+    catBoy.lastDoctorVisit = smth2.lastDoctorVisit;
+    return catBoy;
+};
 
 
 var cat = Cat.createBoy({
@@ -47,7 +49,7 @@ var cat = Cat.createBoy({
 cat.doctorVisiting = function () {
     var difference = new Date().getMonth() - this.lastDoctorVisit.getMonth();
     if (difference > 2)
-        alert("Attention! Your cat needs healing! The last doctor appointment was "+ this.lastDoctorVisit.toLocaleString("en-US", options));
+        alert("Attention! Your cat needs healing! The last doctor appointment was " + this.lastDoctorVisit.toLocaleString("en-US", options));
 };
 
 cat.toString = function () {
@@ -56,8 +58,10 @@ cat.toString = function () {
 
 
 cat.toJSON = function () {
-    var newString = {"name": this.name, "age": this.age, "owner": this.owner, "illnesses": ["allergy", "dry eye"],
-        "vetDoctor": "Dr.Williams", "lastVaccination": new Date(2017, 3, 23), "lastDoctorVisit": this.lastDoctorVisit};
+    var newString = {
+        "name": this.name, "age": this.age, "owner": this.owner, "illnesses": ["allergy", "dry eye"],
+        "vetDoctor": "Dr.Williams", "lastVaccination": new Date(2017, 3, 23), "lastDoctorVisit": this.lastDoctorVisit
+    };
     return newString;
 };
 
@@ -129,7 +133,7 @@ console.log(JSON.stringify(cat));
 /*-----декоратор, который запрещает вход мальчикам----*/
 function sexCheck(func) {
     return function (obj) {
-            if(obj.sex==="female"){
+        if (obj.sex === "female") {
             return func.apply(this, arguments);
         }
         alert("Boys are forbidden!!!");
@@ -139,6 +143,7 @@ function sexCheck(func) {
 function girlsSecrets(obj) {
     console.log("Have a nice day, " + obj.name + "!");
 }
+
 girlsSecrets = sexCheck(girlsSecrets);
 girlsSecrets(cat);
 girlsSecrets(cat1);
@@ -155,13 +160,13 @@ function newFunc(f) {
 
 };
 
-function a(){
-    var str ="";
-    for(var i=0;i<arguments.length;i++){
-        str += arguments[i]+", ";
+function a() {
+    var str = "";
+    for (var i = 0; i < arguments.length; i++) {
+        str += arguments[i] + ", ";
     }
     alert(str);
 }
 
-var b = newFunc(a,Object.keys(cat));
+var b = newFunc(a, Object.keys(cat));
 b(Object.keys(cat1));

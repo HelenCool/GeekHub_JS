@@ -1,76 +1,82 @@
 "use strict";
-function Animal(health, type, isHunter){
+
+function Animal(health, type, isHunter) {
     this.health = health;
     this.type = type;
-    this.isHunter = isHunter;
-    if (this.type === "predator"){
-        Object.defineProperty(this, "health",{
-            writable: false,
-            configurable: false
-        });
+    this.isHunter = isHunter || false;
+    if (this.isHunter) {
+        this.points = (Math.round(Math.random() * 100));
+    } else {
+        this.points = (Math.round(Math.random() * 10));
     }
-    if (isHunter){
-        this.points = (Math.round(Math.random()*100));
-    }
-    else this.points = (Math.round(Math.random()*10));
 }
 
-function Mouse(){
+function Predator(health, type, isHunter) {
+    Animal.apply(this, arguments);
+    Object.defineProperty(this, "health", {
+        writable: false,
+        configurable: false
+    });
+}
+
+Predator.prototype = Object.create(Animal.prototype);
+
+function Mouse() {
     Animal.apply(this, arguments);
 }
+
 Mouse.prototype = Object.create(Animal.prototype);
 Mouse.prototype.constructor = Mouse;
 
 
-function Deer(){
+function Deer() {
     Animal.apply(this, arguments);
 }
+
 Deer.prototype = Object.create(Animal.prototype);
 Deer.prototype.constructor = Deer;
 
 
-function Eagle(){
-    Animal.apply(this, arguments);
+function Eagle() {
+    Predator.apply(this, arguments);
 }
-Eagle.prototype = Object.create(Animal.prototype);
+
+Eagle.prototype = Object.create(Predator.prototype);
 Eagle.prototype.constructor = Eagle;
 
 
-function Human(health, type, isHunter){
-    Animal.apply(this, arguments);
-    this.health =  100;
-    this.type= "predator";
-    this.isHunter = isHunter;
+function Human(health, type, isHunter) {
+    Predator.apply(this, arguments);
 
 }
-Human.prototype = Object.create(Animal.prototype);
+
+Human.prototype = Object.create(Predator.prototype);
 Human.prototype.constructor = Human;
 
-
-function Hunter(health, type, isHunter){
-    Human.apply(this, arguments);
-    this.isHunter = true;
+Human.prototype.makeShot = function (obj) {
+    var shot = obj.health - this.points;
+    if (shot < 0) {
+        console.log(obj.name + " is dead");
+    }
+    else console.log(obj.name + " is still alive");
 }
+
+
+function Hunter(health, type, isHunter) {
+    Human.apply(this, arguments);
+}
+
 Hunter.prototype = Object.create(Human.prototype);
 Hunter.prototype.constructor = Hunter;
 
 
-function Aborigine(health, type, isHunter){
+function Aborigine(health, type, isHunter) {
     Human.apply(this, arguments);
-    this.isHunter = false;
 }
+
 Aborigine.prototype = Object.create(Human.prototype);
 Aborigine.prototype.constructor = Aborigine;
 
-
-function makeShot(obj1, obj2) {
-    makeShot.bind(this, arguments);
-    var shot = obj1.health - obj2.points;
-    if (shot < 0){
-        console.log(obj1.name + " is dead");
-    }
-    else console.log(obj1.name + " is still alive");
-}
 
 var mouse = new Mouse(20, "victim");
 mouse.name = "Mikkey";
@@ -78,19 +84,18 @@ var eagle = new Eagle(50, "predator");
 eagle.name = "Jack the Eagle";
 var deer = new Deer(80, "victim");
 deer.name = "Bamby";
-var hunter = new  Hunter("", "", true);
-var aborigine = new Aborigine();
-
+var hunter = new Hunter(100, "predator", true);
+var aborigine = new Aborigine(100, "predator");
 
 
 console.log("Hunter made a shot with " + hunter.points + " points");
 
-makeShot(mouse, hunter);
-makeShot(deer, hunter);
-makeShot(eagle, hunter);
+hunter.makeShot(mouse);
+hunter.makeShot(deer);
+hunter.makeShot(eagle);
 
 console.log("Aborigine made a shot with " + aborigine.points + " points");
 
-makeShot(mouse, aborigine);
-makeShot(deer, aborigine);
-makeShot(eagle, aborigine);
+aborigine.makeShot(mouse);
+aborigine.makeShot(deer);
+aborigine.makeShot(eagle);
