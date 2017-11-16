@@ -38,12 +38,6 @@ function Human(health, type, isHunter) {
         } else {
             console.log(obj.name + " is still alive");
         }
-        if (obj.type === "predator") {
-            Object.defineProperty(obj, "health", {
-                writable: false,
-                configurable: false
-            });
-        }
     }
 }
 
