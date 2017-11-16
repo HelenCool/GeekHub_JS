@@ -5,7 +5,7 @@ var matrix = [
     ['.', '.', '.', '*', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.'],
     ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '*', '.', '.'],
     ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.'],
-    ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '@', '.', '.', '.', '.', '.'],
+    ['.', '.', '.', '.', '.', '.', '.', '.', '*', '.', '@', '.', '*', '.', '.', '.'],
     ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.'],
     ['.', '.', '.', '*', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '*'],
     ['.', '.', '.', '.', '.', '.', '.', '*', '.', '.', '.', '.', '.', '.', '.', '.'],
@@ -17,101 +17,101 @@ var matrix = [
     ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.'],
     ['.', '.', '.', '*', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.']
 ];
-var outPut = "";
+
+
+function getPosition() {
+    var positions = ["left", "right", "up", "down", "leftUp", "leftDown", "rightUp", "rightDown"];
+    return positions[Math.round(Math.random() * 7)];
+}
+
+var x;
+var y;
+
 var length = matrix.length;
 for (var i = 0; i < length; i++) {
     var l = matrix[i].length;
     for (var j = 0; j < l; j++) {
-        outPut += matrix[i][j] + " ";
-        if (matrix[i][j] == "@"){
-            var animal = matrix[i][j];
-        }
+        if (matrix[i][j] == "@") {
+            y = i;
+            x = j;
 
-    }
-    outPut += "\n";
-}
-console.log(outPut);
-var leftUp = outPut[i - 1][j - 1];
-var up = outPut[i][j - 1];
-var rightUp = outPut[i + 1][j - 1];
-var right = outPut[i + 1][j];
-var rightDown = outPut[i + 1][j + 1];
-var down = outPut[i][j + 1];
-var leftDown = outPut[i - 1][j + 1];
-var left = outPut[i][j + 1];
-
-function getPosition () {
-    var positions = ['left', 'right', 'up', 'down', 'leftUp', 'leftDown', 'rightUp', 'rightDown'];
-    return positions[Math.round(Math.random() * 7)];
-}
-
-function movement(outPut) {
-    var temp = null;
-    switch (getPosition ()) {
-        case "leftUp":
-        {
-            temp = outPut[i - 1][j - 1];
-            outPut[i - 1][j - 1] = animal;
-            animal = temp;
-            break;
-        }
-        case "up":
-        {
-            temp = outPut[i][j - 1];
-            outPut[i][j - 1] = animal;
-            animal = temp;
-            break;
-        }
-        case "rightUp":
-        {
-            temp = outPut[i + 1][j - 1];
-            outPut[i + 1][j - 1] = animal;
-            animal = temp;
-            break;
-        }
-        case "right":
-        {
-            temp = outPut[i + 1][j];
-            outPut[i + 1][j] = animal;
-            animal = temp;
-            break;
-        }
-        case "rightDown":
-        {
-            temp = outPut[i][j + 1];
-            outPut[i][j + 1] = animal;
-            animal = temp;
-            break;
-        }
-        case "down":
-        {
-            temp = outPut[i][j + 1];
-            outPut[i][j + 1] = animal;
-            animal = temp;
-            break;
-        }
-        case "leftDown":
-        {
-            temp = outPut[i - 1][j + 1];
-            outPut[i - 1][j + 1] = animal;
-            animal = temp;
-            break;
-        }
-        case "left":
-        {
-            temp = outPut[i][j + 1];
-            outPut[i][j + 1] = animal;
-            animal = temp;
-
-            break;
         }
     }
-    console.log(getPosition ());
-    console.log(temp);
+}
+
+function draw(matrix) {
+    var outPut = "";
+    for (var i = 0; i < matrix.length; i++) {
+        for (var j = 0; j < matrix[i].length; j++) {
+            outPut += matrix[i][j] + " ";
+        }
+        outPut += "\n";
+    }
     console.log(outPut);
 }
 
-movement(outPut);
+draw(matrix);
 
-// var timer = setInterval(console.log(movement(outPut)), 2000);
-// setTimeout(clearInterval(timer), 30000);
+function movement(matrix) {
+    var switcher = getPosition();
+    console.log(switcher);
+    switch (switcher) {
+        case "leftUp": {
+            changePosition(-1, -1);
+            break;
+        }
+        case "up": {
+            changePosition(-1, 0);
+            break;
+        }
+        case "rightUp": {
+            changePosition(-1, 1);
+            break;
+        }
+        case "right": {
+            changePosition(0, 10);
+            break;
+        }
+        case "rightDown": {
+            changePosition(1, 1);
+            break;
+        }
+        case "down": {
+            changePosition(1, 0);
+            break;
+        }
+        case "leftDown": {
+            changePosition(1, -1);
+            break;
+        }
+        case "left": {
+            changePosition(0, 1);
+            break;
+        }
+    }
+    draw(matrix);
+}
+
+function changePosition(stepY, stepX) {
+    var nextStep = null;
+    if ((y + stepY) >= matrix.length || (y + stepY) < 0 || (x + stepX) >= matrix[x].length || (x + stepX) < 0) {
+        console.log("Warning2");
+        return false;
+    }
+    nextStep = matrix[y + stepY][x + stepX];
+    if (nextStep === "*") {
+        console.log("Warning");
+        return false;
+    }
+
+    matrix[y + stepY][x + stepX] = matrix[y][x];
+    matrix[y][x] = nextStep;
+    x += stepX;
+    y += stepY;
+}
+
+
+var timer = setInterval(function () {
+    movement(matrix)
+}, 2000);
+setTimeout(function (){clearInterval(timer)}, 30000);
