@@ -1,8 +1,8 @@
-import {Mouse} from "./mouse";
-import {Deer} from "./deer";
-import {Eagle} from "./eagle";
-import {Hunter} from "./hunter";
-import {Aborigine} from "./aborigine";
+import Mouse from "./mouse";
+import Deer from "./deer";
+import Eagle from "./eagle";
+import Hunter from "./hunter";
+import Aborigine from "./aborigine";
 
 new Mouse("Mikkey", 20, "victim");
 new Deer("Bamby", 80, "victim");

@@ -1,3 +1,3 @@
-import {Animal} from "./animal";
+import Animal from "./animal";
 
-export class Deer extends Animal{};
+export default class Deer extends Animal{}

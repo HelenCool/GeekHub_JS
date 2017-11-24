@@ -1,3 +1,3 @@
-import {Human} from "./human";
+import Human from "./human";
 
-export class Aborigine extends Human{};
+export default class Aborigine extends Human{}

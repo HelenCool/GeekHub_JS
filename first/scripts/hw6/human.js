@@ -1,6 +1,6 @@
-import {Animal} from "./animal";
+import Animal from "./animal";
 
-export class Human extends Animal {
+export default class Human extends Animal {
     makeShot(obj){
         let shot = obj.health - this.points;
         if (shot < 0) {

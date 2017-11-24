@@ -1,3 +1,3 @@
-import {Human} from "./human";
+import Human from "./human";
 
-export class Hunter extends Human{};
+export default class Hunter extends Human{}

@@ -1,4 +1,4 @@
-export class Animal {
+export default class Animal {
     constructor (name, health, type, isHunter){
         this.name = name;
         this.health = health;
@@ -11,4 +11,4 @@ export class Animal {
             this.points = (Math.round(Math.random() * 10));
         }
     }
-};
+}
