@@ -13,10 +13,6 @@ function Animal(health, type, isHunter) {
 
 function Predator(health, type, isHunter) {
     Animal.apply(this, arguments);
-    Object.defineProperty(this, "health", {
-        writable: false,
-        configurable: false
-    });
 }
 
 Predator.prototype = Object.create(Animal.prototype);
