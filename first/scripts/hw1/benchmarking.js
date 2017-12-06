@@ -98,4 +98,4 @@ function bench() {
     console.timeEnd("forinObject2");
 }
 
-bench();
+
