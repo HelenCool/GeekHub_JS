@@ -38,8 +38,6 @@ let range = {
     from: 1,
     to: 20
 };
-
-
 range[Symbol.iterator] = function () {
 
     let current = this.from;
@@ -59,7 +57,7 @@ range[Symbol.iterator] = function () {
         }
 
     }
-}
+};
 
 let matrix = ``;
 

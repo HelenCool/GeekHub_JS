@@ -52,6 +52,7 @@ function draw(matrix) {
 
 draw(matrix);
 
+
 function movement(matrix) {
     var switcher = getPosition();
     console.log(switcher);
@@ -69,7 +70,7 @@ function movement(matrix) {
             break;
         }
         case "right": {
-            changePosition(0, 10);
+            changePosition(0, 1);
             break;
         }
         case "rightDown": {

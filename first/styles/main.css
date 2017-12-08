@@ -17,6 +17,14 @@ text {
 
 
 }
+span{
+    display: inline-block;
+
+    width: 25px;
+    height: 25px;
+    vertical-align: top;
+    text-align: center;
+}
 
 
 /*------Buttons------*/
@@ -51,4 +59,16 @@ text {
     grid-template-columns: 200px 200px 200px;
     grid-template-rows: 50px 50px;
 }
+
+/*-----------Game------------*/
+.bush {
+    font-size: 20px;
+    color: green;
+}
+
+.bush2 {
+    font-size: 40px;
+    color: darkgreen;
+}
+
 
