@@ -1,7 +1,10 @@
 "use strict";
-let haveDog = false;
+let haveDeer = false;
 let randomiser;
 
+//todo "сущности должны делать только то, что оны умеют
+//todo разложить классы на модули
+//todo создать сервис матрицы
 
 function getRandom() {
     randomiser = Math.round(Math.random() * 3);
@@ -11,31 +14,39 @@ function getRandom() {
 let chooseElement = getRandom();
 
 function getVal() {
-    if (chooseElement === 0 && !haveDog) {
-        haveDog = true;
-        return {
-            elem: `@`,
-            className: `animal`
+    let deer = {};
+    let bushes = [];
+    let trees = [];
+    let path =[];
+    if (chooseElement === 0 && !haveDeer) {
+        haveDeer = true;
+        deer = new Animal;
+        return { deer
+            // elem: `@`,
+            // className: `animal`
         }
     }
     else if (chooseElement === 1) {
         let switcher = getRandom() * 5;
         if (switcher < 4) {
-            return {
-                elem: `&#5833`, //дерево с листьями
-                className: `tree`,
+            trees.push();
+            return { trees
+                // elem: `&#5833`, //дерево с листьями
+                // className: `tree`,
             }
         } else {
-            return {
-                elem: `*`,
-                className: `bush`,
+            bushes.push();
+            return {bushes
+                // elem: `*`,
+                // className: `bush`,
             }
         }
     }
     else {
-        return {
-            elem: `__`,
-            className: `empty`
+        path.push();
+        return { path
+            // elem: `__`,
+            // className: `empty`
         }
     }
 }
@@ -71,7 +82,7 @@ let i = 0;
 let j = 0;
 let matrix = [];
 
-function fillArray() {
+function fillMatrix() {
     for (i = 0; i < 20; i++) {
         matrix[i] = [];
         for (j = 0; j < 20; j++) {
@@ -84,7 +95,7 @@ function fillArray() {
 
 }
 
-matrix = fillArray();
+matrix = fillMatrix();
 
 
 
@@ -202,7 +213,7 @@ class Animal {
 
     }
 
-    init (){
+    init (){ //проверка животное ест или идет
         console.log(this.isEating);
         if (!this.isEating){
             this.movement(matrix);
@@ -216,6 +227,7 @@ class Animal {
 
 class Plant {
     constructor(stage, className, x, y) {
+        this.isBeingEaten = false;
         this.stage = stage;
         this.className = className;
         this.position = {
@@ -255,7 +267,7 @@ class Bush extends Plant {
     }
 
     growth() { //функция роста куста
-        if (this.stage !== this.maxLvl) {
+        if (this.stage !== this.maxLvl && !this.isBeingEaten) {
             this.stage++;
             this.className = `bush2`;
         }
@@ -264,10 +276,13 @@ class Bush extends Plant {
     decreasing() { //функция поедания куста
         if (this.stage !== 0) {
             this.stage--;
+            this.isBeingEaten = true;
         }
         else {
             this.elem = `__`;
             this.className = `empty`;
+            this.isBeingEaten = false;
+            console.log(this.className);
         }
 
     }
@@ -282,7 +297,7 @@ class Path {
         };
         this.elem = `__`;
     }
-}
+} //do I need it?
 
 function findDeer(matrix) {
     let length = matrix.length;
