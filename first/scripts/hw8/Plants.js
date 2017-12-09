@@ -7,6 +7,19 @@ export class Plant {
             x: ``,
             y: ``
         };
+    }
+
+    decreasing() { //функция поедания
+        if (this.stage !== 0) {
+            console.log(this.stage);
+            this.stage--;
+            this.isBeingEaten = true;
+        }
+        else {
+            this.elem = `__`;
+            this.className = `empty`;
+            this.isBeingEaten = false;
+        }
 
     }
 }
@@ -18,16 +31,11 @@ export class Tree extends Plant {
     }
 
     decreasing() {//функция поедания дерева
+        super.decreasing();
         console.log(this.stage);
-        this.stage--;
         if (this.stage === 1) {
             this.className = `treeWithoutLeaves`;
             this.elem = `|`;
-            console.log(this.stage);
-        }
-        if (this.stage === 0) {
-            this.elem = `__`;
-            this.className = `empty`;
         }
     }
 }
@@ -47,16 +55,6 @@ export class Bush extends Plant {
     }
 
     decreasing() { //функция поедания куста
-        if (this.stage !== 0) {
-            this.stage--;
-            this.isBeingEaten = true;
-        }
-        else {
-            this.elem = `__`;
-            this.className = `empty`;
-            this.isBeingEaten = false;
-            console.log(this.className);
-        }
-
+        super.decreasing();
     }
 }

@@ -1,30 +1,22 @@
-let randomiser;
-import {Deer} from "./Animals.js";
-
 export default class Matrix {
-    constructor(){
-
-    }
-
-    getRandom() {
-        randomiser = Math.round(Math.random() * 3);
-        return randomiser;
+    constructor() {
+        this.haveDeer = false;
+        this.chooseElement = Math.round(Math.random());
+        this.matrix = [];
+        this.deerNeighbours = [];
     }
 
     getVal() {
-        let deer = {};
-        let bushes = [];
-        let trees = [];
-        let path =[];
-        if (chooseElement === 0 && !haveDeer) {
-            haveDeer = true;
-            deer = new Deer();
-            return deer;
+        if (this.chooseElement === 0 && !this.haveDeer) {
+            this.haveDeer = true;
+            return {
+                elem: `@`,
+                className: `animal`
+            }
         }
-        else if (chooseElement === 1) {
-            let switcher = getRandom() * 5;
-            if (switcher < 4) {
-                bushes.push()
+        else if (this.chooseElement === 1) {
+            let switcher = Math.round(Math.random() * 10);
+            if (switcher > 5) {
                 return {
                     elem: `&#5833`, //дерево с листьями
                     className: `tree`,
@@ -43,103 +35,38 @@ export default class Matrix {
             }
         }
     }
-}
 
-let chooseElement = getRandom();
-
-function getVal() {
-    let deer = {};
-    let bushes = [];
-    let trees = [];
-    let path =[];
-    if (chooseElement === 0 && !haveDeer) {
-        haveDeer = true;
-        deer = new Deer();
-        return { deer
-            // elem: `@`,
-            // className: `animal`
-        }
-    }
-    else if (chooseElement === 1) {
-        let switcher = getRandom() * 5;
-        if (switcher < 4) {
-            bushes.push()
-            return {
-                elem: `&#5833`, //дерево с листьями
-                className: `tree`,
-            }
-        } else {
-            return {
-                elem: `*`,
-                className: `bush`,
+    fillMatrix() {
+        for (let i = 0; i < 20; i++) {
+            this.matrix[i] = [];
+            for (let j = 0; j < 20; j++) {
+                this.chooseElement = Math.round(Math.random() * 3);
+                let element = this.getVal();
+                this.matrix[i].push(element);
             }
         }
-    }
-    else {
-        return {
-            elem: `__`,
-            className: `empty`
-        }
-    }
-}
-
-let range = {
-    from: 1,
-    to: 20
-};
-range[Symbol.iterator] = function () {
-
-    let current = this.from;
-    let last = this.to;
-    return {
-        next() {
-            if (current <= last) {
-                return {
-                    done: false,
-                    value: current++
-                };
-            } else {
-                return {
-                    done: true
-                };
-            }
-        }
+        console.log(this.matrix);
+        return this.matrix;
 
     }
-};
+
+    // checkPosition() {
+    //     let length = this.fillMatrix().length;
+    //     console.log(length);
+    //     for (let i = 0; i < length; i++) {
+    //         let l = this.fillMatrix()[i].length;
+    //         for (let j = 0; j < l; j++) {
+    //             if (this.fillMatrix()[i][j].elem == `@`) {
+    //                 this.deerNeighbours.push(
+    //                     this.fillMatrix()[i - 1][j - 1], this.fillMatrix()[i - 1][j],
+    //                     this.fillMatrix()[i - 1][j + 1], this.fillMatrix()[i][j+1], this.fillMatrix()[i+1][j + 1],
+    //                     this.fillMatrix()[i+1][j], this.fillMatrix()[i + 1][j-1], this.fillMatrix()[i][j - 1]);
+    //             }
+    //         }
+    //     }
+    // }
 
 
-let i = 0;
-let j = 0;
-let matrix = [];
-
-function fillMatrix() {
-    for (i = 0; i < 20; i++) {
-        matrix[i] = [];
-        for (j = 0; j < 20; j++) {
-            chooseElement = getRandom();
-            let element = getVal();
-            matrix[i].push(element);
-        }
-    }
-    return matrix;
 
 }
 
-matrix = fillMatrix();
-
-
-
-function draw(matrix) {
-    let outPut = ``;
-    for (let i = 0; i < matrix.length; i++) {
-        outPut += `<div>`;
-        for (let j = 0; j < matrix[i].length; j++) {
-            outPut += `<span class="${matrix[i][j].className}">${matrix[i][j].elem}</span>`;
-        }
-        outPut += `</div>`;
-    }
-    document.body.innerHTML = outPut;
-}
-
-draw(matrix);
