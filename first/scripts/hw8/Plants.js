@@ -1,5 +1,5 @@
 export class Plant {
-    constructor(stage, className, x, y) {
+    constructor(stage, className) {
         this.isBeingEaten = false;
         this.stage = stage;
         this.className = className;
@@ -22,6 +22,12 @@ export class Plant {
         }
 
     }
+
+    rot (){
+        if (this.className ===`berry`|| this.className ===`fruit`){
+
+        }
+    }
 }
 
 export class Tree extends Plant {
@@ -29,7 +35,7 @@ export class Tree extends Plant {
         super(3, `tree`);
         this.elem = `&#5833`;
     }
-
+//todo исправить наследование - у дерева стейдж 2 раза естся или как-то так
     decreasing() {//функция поедания дерева
         super.decreasing();
         console.log(this.stage);
@@ -56,5 +62,19 @@ export class Bush extends Plant {
 
     decreasing() { //функция поедания куста
         super.decreasing();
+    }
+}
+
+export class Berry extends Plant {
+    constructor(){
+        super(4, `berry`)
+        this.elem = `o`;
+    }
+}
+
+export class Fruit extends Plant {
+    constructor(){
+        super(4, `fruit`)
+        this.elem = `o`;
     }
 }

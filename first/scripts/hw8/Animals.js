@@ -1,15 +1,12 @@
-import Matrix from "./Matrix.js";
-
 let nextStep = null;
 
 function getPosition() {
     let positions = ["left", "right", "up", "down", "leftUp", "leftDown", "rightUp", "rightDown"];
     return positions[Math.round(Math.random() * 7)];
 }
-let myMatrix = new Matrix().fillMatrix();
 
 export class Animal {
-    constructor(health, fill, className,  x, y) {
+    constructor(health, fill, className) {
         this.health = health;
         this.fill = fill;
         this.eatableUnit = {};
@@ -67,7 +64,7 @@ export class Animal {
                     break;
                 }
                 case "left": {
-                    this.changePosition(0, 1, myMatrix);
+                    this.changePosition(0, -1, myMatrix);
                     break;
                 }
             }
@@ -98,6 +95,13 @@ export class Animal {
 }
 
 export class Deer extends Animal{
+    constructor (){
+        super (100, 100, `deer`)
+    }
+
+}
+
+export class Mouse extends Animal{
     constructor (){
         super (100, 100, `deer`)
     }

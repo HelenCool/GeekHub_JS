@@ -1,16 +1,20 @@
-import {Animal} from "./Animals.js";
+import {Deer} from "./Animals.js";
+import {Mouse} from "./Animals.js";
 import {Bush} from "./Plants.js";
 import {Tree} from "./Plants.js";
-import Matrix from "./Matrix.js";
+import {Berry} from "./Plants.js";
+import {Fruit} from "./Plants.js";
+import Field from "./Field.js";
 
 //todo "сущности должны делать только то, что оны умеют
-//todo перенести класс животных в отдельный модуль
+//todo перписать движение животного
 //todo мышь!!!
 //todo падение/съедание фрутов/ягод
 //todo полосы сытости - здоровья
 
-let matrix = new Matrix();
-let myMatrix = matrix.fillMatrix();
+let field = new Field();
+let myMatrix = field.fillField();
+
 
 function draw(myMatrix) {
     let outPut = ``;
@@ -25,109 +29,30 @@ function draw(myMatrix) {
 }
 draw(myMatrix);
 
-
-function getPosition() {
-    let positions = ["left", "right", "up", "down", "leftUp", "leftDown", "rightUp", "rightDown"];
-    return positions[Math.round(Math.random() * 7)];
-}
-
-let nextStep = null;
-
-// class Animal {
-//     constructor(health, fill, x, y, className) {
-//         this.health = health;
-//         //this.fill = fill;
-//         this.eatableUnit = {};
-//         this.className = className;
-//         this.isEating = false;
-//         this.position = {
-//             x: ``,
-//             y: ``
-//         };
-//         this.points = {
-//             tree: 3,
-//             bush: 2,
-//             fruit: 1
-//         };
-//     }
-//
-//     eat(obj) {
-//         if (obj.stage === 0) {
-//             this.isEating = false;
-//         }
-//         obj.decreasing();
-//     }
-//
-//     movement(myMatrix) {
-//         let switcher = getPosition();
-//         if (!this.isEating) {
-//             console.log(switcher);
-//             switch (switcher) {
-//                 case "leftUp": {
-//                     this.changePosition(-1, -1, myMatrix);
-//                     break;
-//                 }
-//                 case "up": {
-//                     this.changePosition(-1, 0, myMatrix);
-//                     break;
-//                 }
-//                 case "rightUp": {
-//                     this.changePosition(-1, 1, myMatrix);
-//                     break;
-//                 }
-//                 case "right": {
-//                     this.changePosition(0, 1, myMatrix);
-//                     break;
-//                 }
-//                 case "rightDown": {
-//                     this.changePosition(1, 1, myMatrix);
-//                     break;
-//                 }
-//                 case "down": {
-//                     this.changePosition(1, 0, myMatrix);
-//                     break;
-//                 }
-//                 case "leftDown": {
-//                     this.changePosition(1, -1, myMatrix);
-//                     break;
-//                 }
-//                 case "left": {
-//                     this.changePosition(0, -1, myMatrix);
-//                     break;
-//                 }
+// function addHarvest(myMatrix) {
+//     let length = myMatrix.length;
+//     for (let i = 0; i < length; i++) {
+//         let l = myMatrix[i].length;
+//         for (let j = 0; j < l; j++) {
+//             if (myMatrix[i][j].elem === `*`) {
+//                 myMatrix[i][j].elem = new Berry();
+//                 myMatrix[i][j].position.y = i;
+//                 myMatrix[i][j].position.x = j;
 //             }
 //         }
 //     }
-//
-//     changePosition(stepY, stepX, myMatrix) {
-//         if ((this.position.y + stepY) >= myMatrix.length || (this.position.y + stepY) < 0 ||
-//             (this.position.x + stepX) >= myMatrix[this.position.x].length || (this.position.x + stepX) < 0) {
-//             console.log("You've reached the edge");
-//             return false;
-//         }
-//         nextStep = myMatrix[this.position.y + stepY][this.position.x + stepX];
-//         if (nextStep.elem === `*` || nextStep.elem === `&#5833`) {
-//             this.eatableUnit = nextStep;
-//             this.isEating = true;
-//             return false;
-//         }
-//
-//         myMatrix[this.position.y + stepY][this.position.x + stepX] = myMatrix[this.position.y][this.position.x];
-//         myMatrix[this.position.y][this.position.x] = nextStep;
-//         this.position.x += stepX;
-//         this.position.y += stepY;
-//
-//     }
-//
-//     init() { //проверка животное ест или идет
-//         if (!this.isEating) {
-//             this.movement(myMatrix);
-//         } else {
-//             this.eat(this.eatableUnit);
-//         }
-//         draw(myMatrix);
-//     }
+//     //draw(myMatrix);
 // }
+
+
+function isAnimalEating(animal) { //проверка животное ест или идет
+    if (!animal.isEating) {
+        animal.movement(myMatrix);
+    } else {
+        animal.eat(animal.eatableUnit);
+    }
+    draw(myMatrix);
+} //можно ли перенести в какой-то класс?
 
 
 class Path {
@@ -148,7 +73,7 @@ function findDeer(myMatrix) {
         let l = myMatrix[i].length;
         for (let j = 0; j < l; j++) {
             if (myMatrix[i][j].elem === `@`) {
-                let deer = new Animal(100, 100, j, i, `deer`);
+                let deer = new Deer(100, 100, j, i, `deer`);
                 deer.position.y = i;
                 deer.position.x = j;
                 return deer;
@@ -223,23 +148,14 @@ function bushesGrowth(bushes) {
 }
 
 
-function isAnimalEating(animal) { //проверка животное ест или идет
-    if (!animal.isEating) {
-        animal.movement(myMatrix);
-    } else {
-        animal.eat(animal.eatableUnit);
-    }
-    draw(myMatrix);
-}
-
 
 
 bushesGrowth(bushes);
+
 let timer = setInterval(function () {
     isAnimalEating(deer);
 }, 2000);
 setTimeout(function () {
-
     clearInterval(timer)
-}, 20000);
+}, 60000);
 
