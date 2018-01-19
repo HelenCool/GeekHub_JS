@@ -1,138 +1,173 @@
-import {Deer} from "./Animals.js";
-import {Mouse} from "./Animals.js";
-import {Bush} from "./Plants.js";
-import {Tree} from "./Plants.js";
+import Deer from "./Deer.js";
+import Mouse from "./Mouse.js";
+import Bush from "./Bush.js";
+import Tree from "./Tree.js";
+import Empty from "./Empty.js";
+
+
+/**
+ * интерфейс поля
+ */
 
 export default class Field {
-    constructor() {
-        this.neighbour = {};
-        this.haveDeer = false;
-        this.chooseElement = Math.round(Math.random());
-        this.matrix = [];
-        this.x = ``;
-        this.y = ``;
-        this.deerNeighbours = [];
+    constructor(treesCounter, bushesCounter) {
         this.deer = {};
-        //this.bushes = [];
+        this.mouse = {};
+
+        this.stepCounter = 0;
+
+        this.haveDeer = false;
+        this.haveMouse = false;
+
+        this.matrix = [];
+        this.bushes = [];
         this.trees = [];
-    }
-    //
-    // getPosition() {
-    //     let positions = ["left", "right", "up", "down", "leftUp", "leftDown", "rightUp", "rightDown"];
-    //     return positions[Math.round(Math.random() * 7)];
-    // }
-    // randomPosition() {
-    //     let switcher = this.getPosition();
-    //     console.log(switcher);
-    //     switch (switcher) {
-    //         case "leftUp": {
-    //             this.neighbour = this.matrix[this.x - 1][this.y - 1];
-    //             break;
-    //         }
-    //         case "up": {
-    //             this.neighbour = this.matrix[this.x - 1][this.y];
-    //             break;
-    //         }
-    //         case "rightUp": {
-    //             this.neighbour = this.matrix[this.x - 1][this.y + 1];
-    //             break;
-    //         }
-    //         case "right": {
-    //             this.neighbour = this.matrix[this.x][this.y + 1];
-    //             break;
-    //         }
-    //         case "rightDown": {
-    //             this.neighbour = this.matrix[this.x + 1][this.y + 1];
-    //             break;
-    //         }
-    //         case "down": {
-    //             this.neighbour = this.matrix[this.x + 1][this.y];
-    //             break;
-    //         }
-    //         case "leftDown": {
-    //             this.neighbour = this.matrix[this.x + 1] [this.y - 1];
-    //             break;
-    //         }
-    //         case "left": {
-    //             this.neighbour = this.matrix[this.x][this.y - 1];
-    //             break;
-    //         }
-    //     }
-    //     return this.neighbour;
-    // }
-
-    getVal() {
-        if (this.chooseElement === 0 && !this.haveDeer) {
-            this.haveDeer = true;
-            return {
-                elem: `@`,
-                className: `animal`
-            }
-        }
-        else if (this.chooseElement === 1) {
-            let switcher = Math.round(Math.random() * 10);
-            if (switcher > 5) {
-                return {
-                    elem: `&#5833`, //дерево с листьями
-                    className: `tree`,
-                }
-            } else {
-                return {
-                    elem: `*`,
-                    className: `bush`,
-                }
-            }
-        }
-        else {
-            return {
-                elem: `__`,
-                className: `empty`
-            }
-        }
+        this.harvest = [];
+        this.treesCounter = treesCounter;
+        this.bushesCounter = bushesCounter;
     }
 
-    fillField() {
+    getRandPosition() {
+        let x = Math.round(Math.random() * (this.matrix.length - 1));
+        let y = Math.round(Math.random() * (this.matrix.length - 1));
+        return this.matrix[x][y];
+    }
+
+    setDeer() {
+        do {
+            let pos = this.getRandPosition();
+            if (pos.elem === "__") {
+                this.deer = new Deer(100, 100, 'deer');
+                this.deer.x = pos.x;
+                this.deer.y = pos.y;
+                this.haveDeer = true;
+                this.matrix[pos.x][pos.y] = this.deer;
+            }
+        } while (!this.haveDeer);
+    }
+
+    setMouse() {
+        do {
+            let pos = this.getRandPosition();
+            if (pos.elem === "__") {
+                this.mouse = new Mouse(100, 100, 'mouse');
+                this.mouse.x = pos.x;
+                this.mouse.y = pos.y;
+                this.haveMouse = true;
+                this.matrix[pos.x][pos.y] = this.mouse;
+            }
+        } while (!this.haveMouse);
+    }
+
+    setTrees() {
+        do {
+            let pos = this.getRandPosition();
+            if (pos.elem === "__") {
+                let tree = new Tree(2, "tree");
+                tree.x = pos.x;
+                tree.y = pos.y;
+                this.treesCounter--;
+                this.trees.push(tree);
+                this.matrix[pos.x][pos.y] = tree;
+
+            }
+        } while (this.treesCounter);
+    }
+
+    setBushes() {
+        do {
+            let pos = this.getRandPosition();
+            if (pos.elem === "__") {
+                let bush = new Bush(1, "bush");
+                bush.x = pos.x;
+                bush.y = pos.y;
+                this.bushesCounter--;
+                this.bushes.push(bush);
+                this.matrix[pos.x][pos.y] = bush;
+
+            }
+        } while (this.bushesCounter);
+    }
+
+    //выбор элемента для матрицы
+    initItems() {
+        this.setDeer();
+        this.setMouse();
+        this.setTrees();
+        this.setBushes();
+    }
+
+    setEmpty() {
         for (let i = 0; i < 20; i++) {
             this.matrix[i] = [];
             for (let j = 0; j < 20; j++) {
-                this.chooseElement = Math.round(Math.random() * 3);
-                let element = this.getVal();
+                let element = new Empty();
+
                 this.matrix[i].push(element);
+                element.x = i;
+                element.y = j;
+
             }
         }
-        return this.matrix;
+    }
 
+    //заполнение матрицы
+    fillField() {
+        this.setEmpty();
+        this.initItems();
+        return this.matrix;
     }
 
 
+    /**
+     * ходьба животных
+     * @returns {boolean}
+     */
+    changeDeerPosition() {
+        let nextStep = this.deer.movement(this);
+        /*проверка, если рядом куст или дерево, то олень его ест*/
+        if (nextStep.elem === `*` || nextStep.elem === `&#5833` || nextStep.elem === `.` || nextStep.elem === `o`) {
+            this.deer.eatableUnit = nextStep;
+            this.deer.isEating = true;
+            return;
+        }
 
-    // checkPositions() {
-    //     let length = this.matrix.length;
-    //     for (let i = 0; i < length; i++) {
-    //         let l = this.matrix[i].length;
-    //         for (let j = 0; j < l; j++) {
-    //             if (this.matrix[i][j].elem === `@`) {
-    //                 this.deer = new Deer(100, 100, j, i, `deer`);
-    //                 this.deer.position.y = i;
-    //                 this.deer.position.x = j;
-    //             }
-    //             if (this.matrix[i][j].elem === `*`){
-    //                 this.matrix[i][j] = new Bush(1, `bush`, j, i);
-    //                 this.matrix[i][j].position.y = i;
-    //                 this.matrix[i][j].position.x = j;
-    //                 this.bushes.push(this.matrix[i][j]);
-    //                 this.x.push(j);
-    //                 this.y.push(i);
-    //             }
-    //             if (this.matrix[i][j].elem === `&#5833`){
-    //                 this.matrix[i][j] = new Tree(3, `tree`, j, i);
-    //                 this.matrix[i][j].position.y = i;
-    //                 this.matrix[i][j].position.x = j;
-    //                 this.trees.push(this.matrix[i][j]);
-    //
-    //             }
-    //         }
-    //     }
-    // }
+        if (nextStep.elem === '0') { //олень не наступает на мышь
+            return;
+        }
+
+        this.matrix[nextStep.x][nextStep.y] = this.deer; //записываем в клетку с новыми координами оленя
+        this.matrix[this.deer.x][this.deer.y] = nextStep; //на место оленя пишем то, что он заместил своим шагом
+
+
+        /*записываем новые координаты оленя*/
+        this.deer.x = nextStep.x;
+        this.deer.y = nextStep.y;
+
+    }
+
+    changeMousePosition() {
+        let nextStep = this.mouse.movement(this);
+
+        /*проверка, если рядом ягода или фрукт, то мышь его ест*/
+        if (nextStep.elem === `.` || nextStep.elem === `o`) {
+            this.mouse.eatableUnit = nextStep;
+            this.mouse.isEating = true;
+            return;
+        }
+
+        if (nextStep.elem === '@' || nextStep.elem === "&#5833" || nextStep.elem === `*`) { //мышь не наступает на оленя, дереевья, кусты
+            return;
+        }
+
+
+        this.matrix[nextStep.x][nextStep.y] = this.mouse; //записываем в клетку с новыми координами мыши
+        this.matrix[this.mouse.x][this.mouse.y] = nextStep; //на место мыши пишем то, что она заместила своим шагом
+
+
+        /*записываем новые координаты оленя*/
+        this.mouse.x = nextStep.x;
+        this.mouse.y = nextStep.y;
+
+    }
 }
-
