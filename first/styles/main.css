@@ -71,4 +71,13 @@ span{
     color: darkgreen;
 }
 
+.berry {
+    font-size: 10px;
+    color: deeppink;
+}
+
+.fruit {
+    font-size: 20px;
+    color: firebrick;
+}
 
