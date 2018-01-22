@@ -3,7 +3,7 @@ import Plant from "./Plant.js";
 export default class Bush extends Plant {
     constructor(stage, className) {
         super(stage, className);
-        this.elem = `*`;
+        this.elem = `&#127793`;
         this.maxLvl = 2;
     }
 

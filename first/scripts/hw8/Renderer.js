@@ -15,10 +15,10 @@ export default class Renderer {
             }
             outPut += `</div>`;
         }
-        outPut += `<h3> Deer: </h3><text>Health:   </text><progress id="health" value="${field.deer.health}" max="100"></progress> 
-                    <text>Satiety:   </text><progress id="satiety" value="${field.deer.satiety}" max="100">Satiety</progress>
+        outPut += `<h3> Deer: </h3><text>Health:   </text><progress class="healthBar" id="health" value="${field.deer.health}" max="100"></progress> 
+                    <text>Satiety:   </text><progress class="satietyBar" class="healthBar" id="satietyBar" value="${field.deer.satiety}" max="100">Satiety</progress>
                        <h3> Mouse: </h3><text>Health:   </text><progress id="health" value="${field.mouse.health}" max="100"></progress> 
-                    <text>Satiety:   </text><progress id="satiety" value="${field.mouse.satiety}" max="100">Satiety</progress>`;
+                    <text>Satiety:   </text><progress class="satietyBar" id="satiety" value="${field.mouse.satiety}" max="100">Satiety</progress>`;
 
 
         document.body.innerHTML = outPut;

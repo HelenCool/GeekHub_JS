@@ -19,6 +19,7 @@ export default class Harvest extends Plant {
         tmp.y = this.y;
         field.matrix[this.x][this.y] = tmp;
         this.rotCounter++;
+        field.harvest.splice(field.harvest.indexOf(this),1);
     }
 
     lifeCycle(field) {
@@ -27,7 +28,6 @@ export default class Harvest extends Plant {
         if (this.lifeCycleCounter >= 4) {
             this.lifeCycleCounter = 0;
             this.rot(field);
-            delete field.harvest[field.harvest.indexOf(this)];
         }
         if (this.rotCounter === 4) {
             this.initGrowing(field);
@@ -40,14 +40,14 @@ export default class Harvest extends Plant {
             bush.x = this.x;
             bush.y = this.y;
             field.matrix[this.x][this.y] = bush;
-            //field.bushes.push(bush);
+            field.bushes.push(bush);
 
         } else {
             let tree = new Tree(2, `tree`);
             tree.x = this.x;
             tree.y = this.y;
             field.matrix[this.x][this.y] = tree;
-            // field.trees.push(tree);
+            field.trees.push(tree);
         }
     }
 }

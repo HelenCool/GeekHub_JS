@@ -3,7 +3,7 @@ import Plant from "./Plant.js";
 export default class Tree extends Plant {
     constructor(stage, className) {
         super(stage, className);
-        this.elem = `&#5833`;
+        this.elem = `&#127795`;
     }
 
     //функция поедания дерева

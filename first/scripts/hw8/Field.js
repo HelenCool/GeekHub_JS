@@ -3,6 +3,7 @@ import Mouse from "./Mouse.js";
 import Bush from "./Bush.js";
 import Tree from "./Tree.js";
 import Empty from "./Empty.js";
+import Hunter from "./Hunter.js";
 
 
 /**
@@ -13,11 +14,13 @@ export default class Field {
     constructor(treesCounter, bushesCounter) {
         this.deer = {};
         this.mouse = {};
+        this.hunter = {};
 
         this.stepCounter = 0;
 
         this.haveDeer = false;
         this.haveMouse = false;
+        this.haveHunter = false;
 
         this.matrix = [];
         this.bushes = [];
@@ -59,6 +62,19 @@ export default class Field {
         } while (!this.haveMouse);
     }
 
+    setHunter() {
+        do {
+            let pos = this.getRandPosition();
+            if (pos.elem === "__") {
+                this.hunter = new Hunter(100, 100, 'hunter');
+                this.hunter.x = pos.x;
+                this.hunter.y = pos.y;
+                this.haveHunter = true;
+                this.matrix[pos.x][pos.y] = this.hunter;
+            }
+        } while (!this.haveHunter);
+    }
+
     setTrees() {
         do {
             let pos = this.getRandPosition();
@@ -93,6 +109,7 @@ export default class Field {
     initItems() {
         this.setDeer();
         this.setMouse();
+        this.setHunter();
         this.setTrees();
         this.setBushes();
     }
@@ -125,14 +142,15 @@ export default class Field {
      */
     changeDeerPosition() {
         let nextStep = this.deer.movement(this);
+
         /*проверка, если рядом куст или дерево, то олень его ест*/
-        if (nextStep.elem === `*` || nextStep.elem === `&#5833` || nextStep.elem === `.` || nextStep.elem === `o`) {
+        if (nextStep.className === `bush2` || nextStep.className === `tree` || nextStep.className === `berry` || nextStep.className === `fruit`) {
             this.deer.eatableUnit = nextStep;
             this.deer.isEating = true;
             return;
         }
 
-        if (nextStep.elem === '0') { //олень не наступает на мышь
+        if (nextStep.className === 'mouse') { //олень не наступает на мышь
             return;
         }
 
@@ -150,13 +168,13 @@ export default class Field {
         let nextStep = this.mouse.movement(this);
 
         /*проверка, если рядом ягода или фрукт, то мышь его ест*/
-        if (nextStep.elem === `.` || nextStep.elem === `o`) {
+        if (nextStep.className === `berry` || nextStep.className === `fruit`) {
             this.mouse.eatableUnit = nextStep;
             this.mouse.isEating = true;
             return;
         }
 
-        if (nextStep.elem === '@' || nextStep.elem === "&#5833" || nextStep.elem === `*`) { //мышь не наступает на оленя, дереевья, кусты
+        if (nextStep.className === 'deer' || nextStep.className === "tree" || nextStep.className === `bush` || nextStep.className === `bush2`) { //мышь не наступает на оленя, дереевья, кусты
             return;
         }
 
@@ -168,6 +186,26 @@ export default class Field {
         /*записываем новые координаты оленя*/
         this.mouse.x = nextStep.x;
         this.mouse.y = nextStep.y;
+
+    }
+
+    changeHunterPosition() {
+        let nextStep = this.hunter.movement(this);
+
+
+        if (nextStep.className === "tree" || nextStep.className === 'bush'
+            || nextStep.className === `berry` || nextStep.className === `fruit`) { //охотник не наступает на деревья, кусты, ягоды, фрукты, мышь
+            return;
+        }
+
+
+        this.matrix[nextStep.x][nextStep.y] = this.hunter; //записываем в клетку с новыми координами охотника
+        this.matrix[this.hunter.x][this.hunter.y] = nextStep; //на место охотника пишем то, что он заместил своим шагом
+
+
+        /*записываем новые координаты охотника*/
+        this.hunter.x = nextStep.x;
+        this.hunter.y = nextStep.y;
 
     }
 }

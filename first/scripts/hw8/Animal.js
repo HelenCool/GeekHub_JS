@@ -53,6 +53,7 @@ export default class Animal extends Thing {
         if (neighbours.length === 0) {
             return;
         }
+
         let choosePositionIndex = Math.round(Math.random() * (neighbours.length - 1));
         return neighbours[choosePositionIndex];
     }
@@ -77,8 +78,9 @@ export default class Animal extends Thing {
         }
         if (this.health <= 0) {
             this.isDead = true;
-            this.deadCounter++;
+            if (this.isDead) {
+                this.deadCounter++;
+            }
         }
     }
 }
-

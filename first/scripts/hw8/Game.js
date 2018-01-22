@@ -7,7 +7,6 @@ import Empty from "./Empty.js";
 
 //todo животное почему-то в каком-то месте не меняет своего положения, а заменяется пустым элементом
 //todo поправить гниение
-//todo олень не до конца ест дерево
 //todo мышь ест фрукт и ягоду с одинаковой скоростью
 
 class Game {
@@ -19,40 +18,57 @@ class Game {
 
     }
 
-    /**
-     *  функция которая запускает игру
-     */
-    initGame() {
+    checkDeerState(){
         this.field.deer.isHunger();
-        this.field.mouse.isHunger();
 
         if (!this.field.deer.isEating) {
             this.field.changeDeerPosition();
         } else {
             this.field.deer.eat(this.field.deer.eatableUnit);
         }
+    }
+
+    checkMouseState (){
+        this.field.mouse.isHunger();
 
         if (!this.field.mouse.isEating) {
             this.field.changeMousePosition();
         } else {
             this.field.mouse.eat(this.field.mouse.eatableUnit);
         }
+    }
+
+    checkHunterState (){
+        this.field.hunter.isHunger();
+
+        if (!this.field.hunter.isHunting){
+            this.field.changeHunterPosition();
+        } else {
+            this.field.hunter.hunting();
+        }
+    }
+    /**
+     *  функция которая запускает игру
+     */
+    gameStep() {
+        this.checkDeerState();
+        this.checkMouseState();
+        this.checkHunterState();
 
         this.initDropHarvest(this.field);
         this.harvestRot(this.field);
 
-
         /**
          * мертвое животное должно удаляться через 3 хода после смерти
          */
-        if (this.field.deer.deadCounter === 3) {
+        if (this.field.deer.deadCounter === 5) {
             this.field.haveDeer = false;
             let deadDeer = new Empty();
             deadDeer.x = this.field.deer.x;
             deadDeer.y = this.field.deer.y;
             this.field.matrix[this.field.deer.x][this.field.deer.y] = deadDeer;
         }
-        if (this.field.mouse.deadCounter === 3) {
+        if (this.field.mouse.deadCounter === 5) {
             this.field.haveMouse = false;
             let deadMouse = new Empty();
             deadMouse.x = this.field.mouse.x;
@@ -60,12 +76,13 @@ class Game {
             this.field.matrix[this.field.mouse.x][this.field.mouse.y] = deadMouse;
         }
 
+
         /**
          * Если если куст съели - удаляем его из массива
          */
         this.field.bushes.forEach(bush => {
             if (bush.isDestroyed) {
-                delete this.field.bushes[this.field.bushes.indexOf(bush)];
+                this.field.bushes.splice(this.field.bushes.indexOf(bush), 1);
             }
         });
 
@@ -74,7 +91,7 @@ class Game {
          */
         this.field.trees.forEach(tree => {
             if (tree.isDestroyed) {
-                delete this.field.trees[this.field.trees.indexOf(tree)];
+                this.field.trees.splice(this.field.trees.indexOf(tree), 1);
             }
         });
     }
@@ -104,22 +121,24 @@ class Game {
      * рост кустов
      */
     bushesGrowth() {
-        this.field.bushes.forEach(bush => bush.growth());
+        this.field.bushes.forEach(bush => {
+            if (bush.stage !== bush.maxLvl)
+            bush.growth();
+        })
     }
 }
 
-
 let game = new Game;
-// game.renderer.draw(game.field);
+game.renderer.draw(game.field);
 game.bushesGrowth();
 
-
 let timer = setInterval(function () {
-    if (game.field.haveDeer || game.field.haveMouse) {
-        game.initGame();
+    if (game.field.deer.health !==0 || game.field.mouse.health !==0) {
+        game.gameStep();
         game.renderer.draw(game.field);
     }
 }, 500);
 setTimeout(function () {
     clearInterval(timer)
 }, 60000);
+

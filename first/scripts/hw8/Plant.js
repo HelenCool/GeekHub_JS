@@ -1,5 +1,4 @@
 import Thing from './Thing.js';
-import Empty from './Empty.js';
 
 export default class Plant extends Thing {
     constructor(stage, className) {
@@ -26,7 +25,8 @@ export default class Plant extends Thing {
 
     //полное съедание растения
     disappear() {
-        return new Empty();
+        this.elem = `__`;
+        this.className = `empty`;
     }
 
     //падение фруктов/ягод возле растения

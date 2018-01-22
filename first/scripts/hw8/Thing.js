@@ -2,7 +2,6 @@ export default class Thing {
     constructor() {
         this.x = null;
         this.y = null;
-        this.speed = 0;
     }
 
     /**
@@ -12,6 +11,7 @@ export default class Thing {
      */
     getNeighbours(field) {
         let neighbours = [];
+        debugger;
         for (let i = this.x - 1; i <= this.x + 1; i++) {
             for (let j = this.y - 1; j <= this.y + 1; j++) {
                 let isOut = i < 0 || i >= field.matrix.length || j < 0 || j >= field.matrix[this.y].length;
@@ -27,6 +27,7 @@ export default class Thing {
                 }
             }
         }
+
         return neighbours;
     }
 
