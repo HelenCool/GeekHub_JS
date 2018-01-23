@@ -1,6 +1,6 @@
 body {
-    background: #660033;
-    color: #FF9999;
+    background: #103b1a;
+    color: #3fec61;
     padding: 0 16px;
     font: 16px "Open Sans", Helvetica, Arial, sans-serif;
     }
@@ -62,22 +62,37 @@ span{
 
 /*-----------Game------------*/
 .bush {
-    font-size: 20px;
+    font-size: 5px;
     color: green;
 }
 
 .bush2 {
-    font-size: 40px;
+    font-size: 10px;
     color: darkgreen;
 }
 
+.tree {
+    font-size: 15px;
+}
+
 .berry {
-    font-size: 10px;
+    font-size: 5px;
     color: #ff092f;
 }
 
 .fruit {
-    font-size: 20px;
+    font-size: 7px;
     color: firebrick;
+}
+.mouse {
+    font-size: 10px;
+}
+
+.healthBar {
+    color: firebrick;
+}
+
+.satietyBar {
+    color: #1b28b4;
 }
 
